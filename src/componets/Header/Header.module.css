@@ -6,12 +6,9 @@
 }
 
 .flexContainer {
-  width: 100%;
-  max-width: 1184px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
 }
 
 .containerNav {
@@ -21,11 +18,14 @@
 }
 
 .headerlogo {
+  display: inline-block;
   font-weight: 700;
   font-size: 20px;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #191a15;
+  padding-top: 34px;
+  padding-bottom: 34px;
 }
 
 .nav {
