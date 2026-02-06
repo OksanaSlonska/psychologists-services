@@ -1,109 +1,280 @@
 .header {
   width: 100%;
-  margin: 0 auto;
   background: #fbfbfb;
   border-bottom: 1px solid rgba(17, 17, 17, 0.1);
+  position: relative;
+  z-index: 100;
 }
 
-.flexContainer {
+.headerInner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: 60px;
 }
 
-.containerNav {
-  display: flex;
-  gap: clamp(20px, 8vw, 130px);
-  align-items: center;
-}
-
+/* Логотип */
 .headerlogo {
-  display: inline-block;
   font-weight: 700;
   font-size: 20px;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #191a15;
-  padding-top: 34px;
-  padding-bottom: 34px;
+  text-decoration: none;
+  padding: 15px 0;
+  z-index: 102;
+  transition: transform 0.15s ease;
 }
 
+.headerlogo:hover {
+  transform: scale(1.05);
+}
+
+/* --- МОБІЛЬНЕ МЕНЮ (Шторка) --- */
+.menuCollapsible {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 70%;
+  max-width: 300px;
+  background: #fbfbfb;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+
+  transform: translateX(100%);
+  opacity: 0;
+
+  z-index: 101;
+  padding: 20px;
+}
+
+.menuCollapsible.open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (max-width: 1023px) {
+  .menuCollapsible {
+    transition:
+      transform 0.35s ease,
+      opacity 0.25s ease;
+  }
+}
+
+/* Навігація всередині шторки */
 .nav {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .headerlink {
-  display: inline-block;
-  padding-top: 34px;
-  padding-bottom: 34px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-size: 18px;
   color: #191a15;
-  transition: color 0.3s ease;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  transition: color 0.2s ease;
 }
 
-.headerlink:hover {
-  color: #f37113;
+.headerlink::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fc832c;
+
+  transform: translateX(-50%) scale(0.6);
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
+/* Кнопки всередині шторки*/
 .authWrapper {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.loginBtn,
+.registerBtn {
+  width: 100%;
+  padding: 12px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .loginBtn {
-  padding: 14px 39px;
   border: 1px solid rgba(25, 26, 21, 0.2);
-  border-radius: 30px;
-  background-color: transparent;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.25;
-  color: #191a15;
+  background: transparent;
   transition: border-color 0.3s ease;
 }
 
 .registerBtn {
-  padding: 14px 40px;
-  background-color: #fc832c;
-  color: #fbfbfb;
+  background: #fc832c;
+  color: white;
   border: none;
-  border-radius: 30px;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.25;
   transition: background-color 0.3s ease;
 }
 
-.loginBtn:hover {
-  border-color: #f37113;
+@media (hover: hover) {
+  .loginBtn:hover {
+    border-color: #f37113;
+  }
+
+  .registerBtn:hover {
+    background-color: #f37113;
+  }
+
+  .headerlink:hover {
+    color: #f37113;
+  }
+
+  .headerlink:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+/* --- BURGER BUTTON --- */
+.burger {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 102;
+  color: #191a15;
 }
 
-.registerBtn:hover {
-  background-color: #f37113;
+.burger svg {
+  stroke: #191a15;
+  fill: none;
 }
 
-@media screen and (max-width: 1200px) {
-  .containerNav {
-    gap: 40px;
+.burger svg {
+  transition: transform 0.2s ease;
+}
+
+.burger:active svg {
+  transform: scale(0.9);
+}
+
+/* --- OVERLAY --- */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+  z-index: 100;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .menuCollapsible {
+    width: 400px;
+    max-width: 90%;
+    gap: 60px;
+  }
+
+  .headerlink {
+    font-size: 22px;
+  }
+
+  .loginBtn,
+  .registerBtn {
+    font-size: 18px;
+    padding: 16px 24px;
   }
 }
 
-@media screen and (max-width: 950px) {
-  .flexContainer {
-    flex-direction: column;
+@media (min-width: 1024px) {
+  .burger,
+  .overlay {
+    display: none;
+  }
+
+  .menuCollapsible {
+    position: static;
+    transform: none;
+    transition: none;
+    opacity: 1;
+    height: auto;
+    width: auto;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+    max-width: none;
+
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 20px;
-    padding: 20px 0;
   }
 
-  .containerNav {
-    flex-direction: column;
-    gap: 10px;
+  .nav {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .headerlogo {
+    display: inline-block;
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  .headerlink {
+    padding-top: 36px;
+    padding-bottom: 32px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    line-height: 1;
+  }
+
+  .headerlink::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+  }
+
+  .authWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    flex-direction: row;
+    width: auto;
   }
 }
