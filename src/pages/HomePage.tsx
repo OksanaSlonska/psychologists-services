@@ -48,7 +48,7 @@ export default function HomePage() {
 
             {/* Зелений блок*/}
             <div className={`${styles.decorBlock} ${styles.questionBlock}`}>
-              <svg width="10" height="17" className={styles.decorIconSvg}>
+              <svg width="15" height="23" className={styles.decorIconSvg}>
                 <use href="/image/icons.svg#icon-question" />
               </svg>
             </div>
