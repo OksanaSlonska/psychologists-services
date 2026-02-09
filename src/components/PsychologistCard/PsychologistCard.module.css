@@ -1,0 +1,184 @@
+.card {
+  background-color: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(252, 131, 44, 0.2);
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  align-self: center;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.onlineIndicator {
+  position: absolute;
+  top: 9px;
+  right: 12px;
+  width: 14px;
+  height: 14px;
+  background-color: #38cd3e;
+  border-radius: 50%;
+  border: 3px solid #fff;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.role {
+  color: #8a8a8a;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 16px;
+  color: #191a15;
+}
+
+.rating {
+  font-weight: 500;
+}
+
+.divider {
+  color: #e0e0e0;
+}
+
+.price {
+  font-weight: 500;
+}
+
+.priceValue {
+  color: #38cd3e;
+  font-weight: bold;
+}
+
+.favoriteBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.iconsHeard {
+  width: 26px;
+  height: 26px;
+  fill: transparent;
+  stroke: #191a15;
+  stroke-width: 2px;
+}
+
+.favoriteBtn:hover .iconsHeard {
+  fill: #fc832c;
+  stroke: transparent;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 24px 0;
+  color: #191a15;
+  text-align: center;
+}
+
+.detailsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.tag {
+  background-color: #f3f3f3;
+  padding: 8px 16px;
+  border-radius: 24px;
+  font-size: 14px;
+}
+
+.tagLabel {
+  color: #8a8a8a;
+}
+.tagValue {
+  color: #191a15;
+  font-weight: 500;
+}
+
+.about {
+  color: #8a8a8a;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.readMoreBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #191a15;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 4px;
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .avatarWrapper {
+    align-self: flex-start;
+  }
+
+  .headerRow {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .name {
+    text-align: left;
+  }
+
+  .detailsList {
+    justify-content: flex-start;
+  }
+}

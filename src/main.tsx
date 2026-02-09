@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import "modern-normalize";
 import "./global.css";
-import App from "./componets/App/App.tsx";
+import App from "./components/App/App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
