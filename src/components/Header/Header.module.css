@@ -278,3 +278,18 @@
     width: auto;
   }
 }
+
+.modalTitle {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: #191a15;
+  line-height: 1.2;
+}
+
+.modalText {
+  font-size: 16px;
+  color: rgba(25, 26, 21, 0.5);
+  margin-bottom: 40px;
+  line-height: 1.25;
+}
