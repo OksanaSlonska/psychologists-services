@@ -30,6 +30,51 @@
   transform: scale(1.05);
 }
 
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.userIcon {
+  width: 40px;
+  height: 40px;
+  background-color: #fc832c;
+
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.iconsUser {
+  fill: #fbfbfb;
+}
+
+.userName {
+  font-weight: 500;
+  font-size: 16px;
+  color: #191a15;
+}
+
+.logoutBtn {
+  padding: 14px 39px;
+  border: 1px solid rgba(25, 26, 21, 0.2);
+  border-radius: 30px;
+  background: transparent;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.logoutBtn:hover {
+  background-color: #fc832c;
+  color: #fff;
+  border-color: #fc832c;
+}
+
 /* --- МОБІЛЬНЕ МЕНЮ (Шторка) --- */
 .menuCollapsible {
   position: fixed;
@@ -103,6 +148,12 @@
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+}
+
+.headerlink:hover::after,
+.headerlink:global(.active)::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
 
 /* Кнопки всередині шторки*/

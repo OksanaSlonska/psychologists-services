@@ -1,6 +1,9 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+import { register as registerOperation } from "../../redux/auth/operations";
 import styles from "./AuthForms.module.css";
 
 interface IFormInput {
@@ -26,16 +29,35 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 export default function RegisterForm() {
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log("Данные из React Hook Form:", data);
+    // 👈 5. Самое важное: Отправляем данные в Redux -> Firebase
+    dispatch(
+      registerOperation({
+        name: data.username, // В форме у нас username, а в Firebase ждем name
+        email: data.email,
+        password: data.password,
+      }),
+    )
+      .unwrap() // Это позволяет узнать, успешно ли прошел запрос
+      .then(() => {
+        console.log("Регистрация успешна!");
+        reset(); // Очищаем форму, если все ок
+        // Здесь потом можно будет добавить закрытие модалки
+      })
+      .catch((err) => {
+        console.error("Ошибка регистрации:", err);
+        // Можно показать уведомление пользователю
+      });
   };
 
   return (

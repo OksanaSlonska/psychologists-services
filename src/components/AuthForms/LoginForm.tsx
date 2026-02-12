@@ -1,6 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+import { login } from "../../redux/auth/operations";
+
 import styles from "./AuthForms.module.css";
 
 interface IFormInput {
@@ -21,16 +25,27 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 export default function LoginForm() {
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log("Данные для входа:", data);
+    dispatch(login(data))
+      .unwrap()
+      .then(() => {
+        console.log("Вход выполнен успешно!");
+        reset();
+      })
+      .catch((err) => {
+        console.error("Ошибка входа:", err);
+        alert("Неверный email или пароль"); // Временное уведомление
+      });
   };
 
   return (

@@ -4,7 +4,18 @@ import PsychologistsPage from "../../pages/PsychologistsPage";
 import FavoritesPage from "../../pages/FavoritesPage";
 import Header from "../Header/Header";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { refreshUser } from "../../redux/auth/operations";
+import type { AppDispatch } from "../../redux/store";
+
 export default function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
   return (
     <div>
       <Header />

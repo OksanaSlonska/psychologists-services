@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./Header.module.css";
 import Modal from "../Modal/Modal";
 import RegisterForm from "../AuthForms/RegisterForm";
 import LoginForm from "../AuthForms/LoginForm";
+import { useSelector, useDispatch } from "react-redux";
+import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors";
+import { logOut } from "../../redux/auth/authSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,13 +39,18 @@ export default function Header() {
 
   const closeLogin = () => setIsLoginOpen(false);
 
+  // Отримуємо дані з Redux
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const user = useSelector(selectUser);
+
   return (
     <header className={styles.header}>
       <div className={`container ${styles.headerInner}`}>
         {/* 1. Логотип (Завжди видно) */}
-        <Link className={styles.headerlogo} to="/" onClick={closeMenu}>
+        <NavLink className={styles.headerlogo} to="/" onClick={closeMenu}>
           <span className="accent">psychologists.</span>services
-        </Link>
+        </NavLink>
 
         {/*Меню (Навігація + Кнопки) */}
 
@@ -50,32 +58,51 @@ export default function Header() {
           className={`${styles.menuCollapsible} ${isOpen ? styles.open : ""}`}
         >
           <nav className={styles.nav}>
-            <Link className={styles.headerlink} to="/" onClick={closeMenu}>
+            <NavLink className={styles.headerlink} to="/" onClick={closeMenu}>
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               className={styles.headerlink}
               to="/psychologists"
               onClick={closeMenu}
             >
               Psychologists
-            </Link>
-            <Link
-              className={styles.headerlink}
-              to="/favorites"
-              onClick={closeMenu}
-            >
-              Favorites
-            </Link>
+            </NavLink>
+            {isLoggedIn && (
+              <NavLink to="/favorites" className={styles.headerlink}>
+                Favorites
+              </NavLink>
+            )}
           </nav>
 
           <div className={styles.authWrapper}>
-            <button onClick={openLogin} className={styles.loginBtn}>
-              Log In
-            </button>
-            <button onClick={openRegister} className={styles.registerBtn}>
-              Registration
-            </button>
+            {isLoggedIn ? (
+              //  авторизований користувач
+              <div className={styles.userMenu}>
+                <div className={styles.userIcon}>
+                  <svg width="24" height="24" className={styles.iconsUser}>
+                    <use href="/image/icons.svg#icon-user" />
+                  </svg>
+                </div>
+                <span className={styles.userName}>{user.name}</span>
+                <button
+                  className={styles.logoutBtn}
+                  onClick={() => dispatch(logOut())}
+                >
+                  Log Out
+                </button>
+              </div>
+            ) : (
+              // гість
+              <>
+                <button onClick={openLogin} className={styles.loginBtn}>
+                  Log In
+                </button>
+                <button onClick={openRegister} className={styles.registerBtn}>
+                  Registration
+                </button>
+              </>
+            )}
           </div>
         </div>
 
