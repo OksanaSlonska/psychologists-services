@@ -7,7 +7,7 @@ import {
   limitToFirst,
   startAt,
 } from "firebase/database";
-import { db } from "../firebase";
+import { db } from "../../firebase";
 
 export const fetchPsychologists = createAsyncThunk(
   "psychologists/fetchMore",
@@ -15,20 +15,20 @@ export const fetchPsychologists = createAsyncThunk(
     try {
       const dbRef = ref(db);
 
-      let psychologistsQuery;
+      const limitCount = lastId ? 5 : 3;
 
-      if (!lastId) {
-        psychologistsQuery = query(dbRef, orderByKey(), limitToFirst(3));
-      } else {
-        psychologistsQuery = query(
+      let q = query(dbRef, orderByKey(), limitToFirst(limitCount));
+
+      if (lastId) {
+        q = query(
           dbRef,
           orderByKey(),
           startAt(lastId),
-          limitToFirst(4),
+          limitToFirst(limitCount),
         );
       }
 
-      const snapshot = await get(psychologistsQuery);
+      const snapshot = await get(q);
 
       if (snapshot.exists()) {
         const rawData = snapshot.val();
@@ -37,9 +37,11 @@ export const fetchPsychologists = createAsyncThunk(
           ...rawData[key],
         }));
 
-        const finalItems = lastId ? items.slice(1) : items;
+        const finalItems = lastId
+          ? items.filter((item) => item.id !== lastId)
+          : items;
 
-        const hasMore = items.length === (lastId ? 4 : 3);
+        const hasMore = items.length === limitCount;
 
         return { items: finalItems, hasMore };
       }

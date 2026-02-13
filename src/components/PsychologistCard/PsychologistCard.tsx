@@ -1,31 +1,42 @@
+import { useState } from "react";
 import type { Psychologist } from "../../types/psychologist";
 import styles from "./PsychologistCard.module.css";
 
 interface Props {
-  data: Psychologist;
+  psychologist: Psychologist;
 }
 
-export const PsychologistCard = ({ data }: Props) => {
+export const PsychologistCard = ({ psychologist }: Props) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const data = psychologist;
+
   return (
     <div className={styles.card}>
       {/* 1. Аватарка (Зліва на робочому столі, зверху на мобілці) */}
       <div className={styles.avatarWrapper}>
-        <img src={data.avatar_url} alt={data.name} className={styles.avatar} />
+        <img
+          src={psychologist.avatar_url}
+          alt={psychologist.name}
+          className={styles.avatar}
+        />
         <div className={styles.onlineIndicator}></div>
       </div>
 
       {/* 2. Права частина з контентом */}
       <div className={styles.content}>
-        {/*Верхній рядок: "Psychologist" ----- Рейтинг | Ціна | Серце */}
         <div className={styles.headerRow}>
           <span className={styles.role}>Psychologist</span>
 
           <div className={styles.stats}>
-            <span className={styles.rating}>⭐️ Rating: {data.rating}</span>
+            <span className={styles.rating}>
+              ⭐️ Rating: {psychologist.rating}
+            </span>
             <span className={styles.divider}>|</span>
             <span className={styles.price}>
               Price / 1 hour:{" "}
-              <span className={styles.priceValue}>{data.price_per_hour}$</span>
+              <span className={styles.priceValue}>
+                {psychologist.price_per_hour}$
+              </span>
             </span>
 
             <button className={styles.favoriteBtn}>
@@ -36,31 +47,72 @@ export const PsychologistCard = ({ data }: Props) => {
           </div>
         </div>
 
-        <h2 className={styles.name}>{data.name}</h2>
+        <h2 className={styles.name}>{psychologist.name}</h2>
 
         <div className={styles.detailsList}>
           <div className={styles.tag}>
             <span className={styles.tagLabel}>Experience: </span>
-            <span className={styles.tagValue}>{data.experience}</span>
+            <span className={styles.tagValue}>{psychologist.experience}</span>
           </div>
           <div className={styles.tag}>
             <span className={styles.tagLabel}>License: </span>
-            <span className={styles.tagValue}>{data.license}</span>
+            <span className={styles.tagValue}>{psychologist.license}</span>
           </div>
           <div className={styles.tag}>
             <span className={styles.tagLabel}>Specialization: </span>
-            <span className={styles.tagValue}>{data.specialization}</span>
+            <span className={styles.tagValue}>
+              {psychologist.specialization}
+            </span>
           </div>
           <div className={styles.tag}>
             <span className={styles.tagLabel}>Initial Consultation: </span>
-            <span className={styles.tagValue}>{data.initial_consultation}</span>
+            <span className={styles.tagValue}>
+              {psychologist.initial_consultation}
+            </span>
           </div>
         </div>
 
         <div className={styles.about}>
-          <p>{data.about}</p>
-          <button className={styles.readMoreBtn}>Read more</button>
+          <p>{psychologist.about}</p>
+          {!isExpanded && (
+            <button
+              className={styles.readMoreBtn}
+              onClick={() => {
+                console.log("Клик по Read more!");
+                setIsExpanded(true);
+              }}
+            >
+              Read more
+            </button>
+          )}
         </div>
+
+        {isExpanded && (
+          <div className={styles.expandedContent}>
+            <ul className={styles.reviewsList}>
+              {data.reviews.map((review, index) => (
+                <li key={index} className={styles.reviewItem}>
+                  <div className={styles.reviewHeader}>
+                    <div className={styles.reviewAvatar}>
+                      {review.reviewer ? review.reviewer[0] : "?"}
+                    </div>
+                    <div>
+                      <h4 className={styles.reviewerName}>{review.reviewer}</h4>
+                      <span className={styles.reviewRating}>
+                        ⭐ {review.rating}
+                      </span>
+                    </div>
+                  </div>
+                  <p className={styles.reviewText}>{review.comment}</p>
+                </li>
+              ))}
+            </ul>
+
+            <button className={styles.appointmentBtn}>
+              Make an appointment
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

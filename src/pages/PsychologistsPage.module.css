@@ -1,0 +1,33 @@
+.listContainer {
+  padding-top: 170px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadMoreBtn {
+  border-radius: 30px;
+  padding: 14px 48px;
+
+  background: #fc832c;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: #fbfbfb;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 54px;
+}
+
+.loadMoreBtn:hover {
+  opacity: 0.9;
+  background: #f37113;
+}
+
+.loadMoreBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

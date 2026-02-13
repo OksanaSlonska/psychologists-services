@@ -1,39 +1,58 @@
-import { useEffect, useState } from "react";
-import { getAllPsychologists } from "../services/psychologistsService";
-import type { Psychologist } from "../types/psychologist";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "../redux/store";
+import { fetchPsychologists } from "../redux/psychologists/operations";
+import {
+  selectPsychologists,
+  selectHasMore,
+  selectIsLoading,
+} from "../redux/psychologists/selectors";
+import styles from "./PsychologistsPage.module.css";
+
 import { PsychologistCard } from "../components/PsychologistCard/PsychologistCard";
 
 export default function PsychologistsPage() {
-  const [psychologists, setPsychologists] = useState<Psychologist[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
 
+  // Беремо дані із "сховища" (Redux)
+  const psychologists = useSelector(selectPsychologists);
+  const hasMore = useSelector(selectHasMore);
+  const isLoading = useSelector(selectIsLoading);
+
+  // 1. Завантажуємо першу порцію під час відкриття сторінки
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        // Просто вызываем функцию, как вы делали с axios
-        const data = await getAllPsychologists();
-        setPsychologists(data);
-      } catch (error) {
-        console.log("Ошибка загрузки");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Завантажуємо тільки якщо у сторі ще немає психологів
+    if (psychologists.length === 0) {
+      dispatch(fetchPsychologists(null));
+    }
+  }, [dispatch, psychologists.length]);
 
-    fetchData();
-  }, []);
+  // 2. Функція для кнопки Load More
+  const handleLoadMore = () => {
+    const lastId = psychologists[psychologists.length - 1]?.id;
+    if (lastId) {
+      dispatch(fetchPsychologists(lastId));
+    }
+  };
 
-  if (isLoading) return <h2>Loading...</h2>;
-
-  // 4. Верстка
   return (
-    <div className="container">
-      <div>
-        {psychologists.map((person, index) => (
-          <PsychologistCard key={index} data={person} />
+    <div className={`container ${styles.listContainer}`}>
+      <ul className={styles.list}>
+        {psychologists.map((item) => (
+          <PsychologistCard key={item.id} psychologist={item} />
         ))}
-      </div>
+      </ul>
+
+      {/* Кнопка Load More */}
+      {hasMore && (
+        <button
+          onClick={handleLoadMore}
+          className={styles.loadMoreBtn}
+          disabled={isLoading}
+        >
+          {isLoading ? "Loading..." : "Load More"}
+        </button>
+      )}
     </div>
   );
 }
