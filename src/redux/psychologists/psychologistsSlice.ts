@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 import { fetchPsychologists } from "./operations";
 import type { Psychologist } from "../../types/psychologist";
 
 interface PsychologistsState {
   items: Psychologist[];
+  favorites: Psychologist[];
   isLoading: boolean;
   error: string | null;
   hasMore: boolean;
@@ -11,6 +13,14 @@ interface PsychologistsState {
 
 const initialState: PsychologistsState = {
   items: [],
+  favorites: (() => {
+    try {
+      const saved = localStorage.getItem("favorites");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  })(),
   isLoading: false,
   error: null,
   hasMore: true,
@@ -24,6 +34,17 @@ const psychologistsSlice = createSlice({
       state.items = [];
       state.hasMore = true;
     },
+    toggleFavorite: (state, action: PayloadAction<Psychologist>) => {
+      const index = state.favorites.findIndex(
+        (fav) => fav.id === action.payload.id,
+      );
+      if (index === -1) {
+        state.favorites.push(action.payload);
+      } else {
+        state.favorites.splice(index, 1);
+      }
+      localStorage.setItem("favorites", JSON.stringify(state.favorites));
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -34,10 +55,8 @@ const psychologistsSlice = createSlice({
       .addCase(fetchPsychologists.fulfilled, (state, action) => {
         state.isLoading = false;
 
-        // Створюємо масив існуючих ID
+        // Логіка фільтрації дублів
         const existingIds = state.items.map((item) => item.id);
-
-        // Фільтруємо елементи, що прийшли, залишаючи тільки нові
         const uniqueNewItems = action.payload.items.filter(
           (newItem) => !existingIds.includes(newItem.id),
         );
@@ -52,5 +71,6 @@ const psychologistsSlice = createSlice({
   },
 });
 
-export const { clearItems } = psychologistsSlice.actions;
+// Объединяем экспорт
+export const { toggleFavorite, clearItems } = psychologistsSlice.actions;
 export const psychologistsReducer = psychologistsSlice.reducer;

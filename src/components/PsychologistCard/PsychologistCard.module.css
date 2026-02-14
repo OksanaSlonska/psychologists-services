@@ -103,11 +103,22 @@
   fill: transparent;
   stroke: #191a15;
   stroke-width: 2px;
+  transition:
+    fill 0.2s,
+    stroke 0.2s;
 }
 
 .favoriteBtn:hover .iconsHeard {
   fill: #fc832c;
   stroke: transparent;
+}
+
+.isFavorite {
+  width: 26px;
+  height: 26px;
+  fill: #fc832c;
+  stroke: #fc832c;
+  stroke-width: 2px;
 }
 
 .name {

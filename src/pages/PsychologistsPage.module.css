@@ -31,3 +31,42 @@
   background: #ccc;
   cursor: not-allowed;
 }
+
+.emptyWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.emptyTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #191a15;
+  margin-bottom: 16px;
+}
+
+.emptyText {
+  font-size: 16px;
+  color: #8a8a8a;
+  max-width: 400px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.backBtn {
+  display: inline-block;
+  padding: 14px 40px;
+  background-color: #fc832c;
+  color: #fbfbfb;
+  border-radius: 30px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.backBtn:hover {
+  background-color: #f37113;
+}

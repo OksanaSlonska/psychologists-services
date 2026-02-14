@@ -1,5 +1,8 @@
 import { useState } from "react";
 import type { Psychologist } from "../../types/psychologist";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFavorite } from "../../redux/psychologists/psychologistsSlice";
+import { selectFavorites } from "../../redux/psychologists/selectors";
 import styles from "./PsychologistCard.module.css";
 
 interface Props {
@@ -9,6 +12,14 @@ interface Props {
 export const PsychologistCard = ({ psychologist }: Props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const data = psychologist;
+
+  const dispatch = useDispatch();
+  const favorites = useSelector(selectFavorites);
+  const isFavorite = favorites.some((fav: any) => fav.id === psychologist.id);
+
+  const handleFavoriteClick = () => {
+    dispatch(toggleFavorite(psychologist));
+  };
 
   return (
     <div className={styles.card}>
@@ -39,8 +50,13 @@ export const PsychologistCard = ({ psychologist }: Props) => {
               </span>
             </span>
 
-            <button className={styles.favoriteBtn}>
-              <svg className={styles.iconsHeard}>
+            <button
+              className={styles.favoriteBtn}
+              onClick={handleFavoriteClick}
+            >
+              <svg
+                className={`${styles.iconsHeard} ${isFavorite ? styles.isFavorite : ""}`}
+              >
                 <use href="/image/icons.svg#icon-heart" />
               </svg>
             </button>

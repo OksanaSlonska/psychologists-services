@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { refreshUser } from "../../redux/auth/operations";
 import type { AppDispatch } from "../../redux/store";
+import { PrivateRoute } from "../PrivateRoute/PrivateRoute";
 
 export default function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,7 +23,14 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/psychologists" element={<PsychologistsPage />} />
-        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route
+          path="/favorites"
+          element={
+            <PrivateRoute>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+        />
         <Route path="*" element={<HomePage />} />
       </Routes>
     </div>
