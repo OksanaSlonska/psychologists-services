@@ -6,7 +6,6 @@
 
 .inputWrapper {
   position: relative;
-  /* width: 100%; можно добавить, если инпуты не растягиваются */
 }
 
 .error {

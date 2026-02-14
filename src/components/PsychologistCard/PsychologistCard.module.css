@@ -72,6 +72,13 @@
 
 .rating {
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.iconsRating {
+  fill: #ffc531;
 }
 
 .divider {
@@ -199,6 +206,20 @@
   justify-content: center;
   font-weight: 500;
   font-size: 20px;
+}
+
+.reviewRating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.reviewText {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.25;
+  color: rgba(25, 26, 21, 0.5);
 }
 
 .appointmentBtn {

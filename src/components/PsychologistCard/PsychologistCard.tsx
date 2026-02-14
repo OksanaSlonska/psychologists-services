@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFavorite } from "../../redux/psychologists/psychologistsSlice";
 import { selectFavorites } from "../../redux/psychologists/selectors";
 import styles from "./PsychologistCard.module.css";
+import Modal from "../Modal/Modal";
+import { AppointmentForm } from "../AppointmentForm/AppointmentForm";
 
 interface Props {
   psychologist: Psychologist;
 }
 
 export const PsychologistCard = ({ psychologist }: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const data = psychologist;
 
@@ -40,7 +43,10 @@ export const PsychologistCard = ({ psychologist }: Props) => {
 
           <div className={styles.stats}>
             <span className={styles.rating}>
-              ⭐️ Rating: {psychologist.rating}
+              <svg width="15" height="14" className={styles.iconsRating}>
+                <use href="/image/icons.svg#icon-rating" />
+              </svg>
+              Rating: {psychologist.rating}
             </span>
             <span className={styles.divider}>|</span>
             <span className={styles.price}>
@@ -94,7 +100,6 @@ export const PsychologistCard = ({ psychologist }: Props) => {
             <button
               className={styles.readMoreBtn}
               onClick={() => {
-                console.log("Клик по Read more!");
                 setIsExpanded(true);
               }}
             >
@@ -115,7 +120,14 @@ export const PsychologistCard = ({ psychologist }: Props) => {
                     <div>
                       <h4 className={styles.reviewerName}>{review.reviewer}</h4>
                       <span className={styles.reviewRating}>
-                        ⭐ {review.rating}
+                        <svg
+                          width="15"
+                          height="14"
+                          className={styles.iconsRating}
+                        >
+                          <use href="/image/icons.svg#icon-rating" />
+                        </svg>
+                        {review.rating}
                       </span>
                     </div>
                   </div>
@@ -124,11 +136,21 @@ export const PsychologistCard = ({ psychologist }: Props) => {
               ))}
             </ul>
 
-            <button className={styles.appointmentBtn}>
+            <button
+              className={styles.appointmentBtn}
+              onClick={() => setIsModalOpen(true)}
+            >
               Make an appointment
             </button>
           </div>
         )}
+
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <AppointmentForm
+            psychologist={psychologist}
+            onSubmitSuccess={() => setIsModalOpen(false)}
+          />
+        </Modal>
       </div>
     </div>
   );

@@ -40,7 +40,7 @@ export default function RegisterForm() {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    // 👈 5. Самое важное: Отправляем данные в Redux -> Firebase
+    //  5. Самое важное: Отправляем данные в Redux -> Firebase
     dispatch(
       registerOperation({
         name: data.username, // В форме у нас username, а в Firebase ждем name
@@ -52,7 +52,6 @@ export default function RegisterForm() {
       .then(() => {
         console.log("Регистрация успешна!");
         reset(); // Очищаем форму, если все ок
-        // Здесь потом можно будет добавить закрытие модалки
       })
       .catch((err) => {
         console.error("Ошибка регистрации:", err);
