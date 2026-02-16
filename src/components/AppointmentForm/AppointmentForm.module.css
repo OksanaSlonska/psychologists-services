@@ -4,12 +4,12 @@
 }
 
 .title {
-  font-size: 40px;
+  font-size: 32px;
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: #191a15;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .subtitle {
@@ -20,15 +20,15 @@
   font-size: 16px;
   line-height: 1.25;
   color: rgba(25, 26, 21, 0.5);
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .psychologistBrief {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .avatar {
@@ -69,7 +69,7 @@
 .textarea,
 .inputError {
   width: 100%;
-  padding: 16px 18px;
+  padding: 12px 14px;
   border: 1px solid rgba(25, 26, 21, 0.1);
   border-radius: 12px;
   font-size: 16px;
@@ -78,12 +78,12 @@
   transition: border-color 0.2s;
 
   box-sizing: border-box;
-  height: 52px;
+  height: 48px;
   flex-shrink: 0;
 }
 
 .textarea {
-  height: 116px;
+  height: 90px;
   resize: none;
 }
 
@@ -96,6 +96,12 @@
   display: flex;
   gap: 8px;
   width: 100%;
+}
+
+.inputGroup .fieldWrapper {
+  flex: 1;
+  width: auto;
+  min-width: 0;
 }
 
 .fieldWrapper {
@@ -157,4 +163,73 @@
   margin-top: 4px;
   color: #ef2447;
   font-size: 12px;
+}
+
+.timeInputWrapper {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 100%;
+
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 16px rgba(17, 17, 17, 0.1);
+  padding: 16px;
+
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dropdownTitle {
+  font-size: 16px;
+  font-weight: 500;
+  color: #191a15;
+  margin: 0 0 8px 0;
+  text-align: left;
+}
+
+.timeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  height: 160px;
+
+  scrollbar-width: thin;
+  scrollbar-color: #e0e0e0 transparent;
+}
+
+.timeList::-webkit-scrollbar {
+  width: 6px;
+}
+.timeList::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.timeList::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.timeItem {
+  font-size: 16px;
+  color: rgba(25, 26, 21, 0.3);
+  padding: 4px 0;
+  cursor: pointer;
+  transition:
+    color 0.2s,
+    font-weight 0.2s;
+}
+
+.timeItem:hover {
+  color: #191a15;
+  font-weight: 500;
 }
