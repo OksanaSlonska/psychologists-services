@@ -1,56 +1,84 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../redux/store";
-import { fetchPsychologists } from "../redux/psychologists/operations";
 import {
   selectPsychologists,
-  selectHasMore,
   selectIsLoading,
 } from "../redux/psychologists/selectors";
+import { fetchPsychologists } from "../redux/psychologists/operations";
+import { PsychologistsFilter } from "../components/PsychologistsFilter/PsychologistsFilter";
+import { PsychologistCard } from "../components/PsychologistCard/PsychologistCard";
 import styles from "./PsychologistsPage.module.css";
 
-import { PsychologistCard } from "../components/PsychologistCard/PsychologistCard";
+const ITEMS_PER_PAGE = 3;
 
 export default function PsychologistsPage() {
   const dispatch = useDispatch<AppDispatch>();
-
-  // Беремо дані із "сховища" (Redux)
   const psychologists = useSelector(selectPsychologists);
-  const hasMore = useSelector(selectHasMore);
   const isLoading = useSelector(selectIsLoading);
 
-  // 1. Завантажуємо першу порцію під час відкриття сторінки
-  useEffect(() => {
-    // Завантажуємо тільки якщо у сторі ще немає психологів
-    if (psychologists.length === 0) {
-      dispatch(fetchPsychologists(null));
-    }
-  }, [dispatch, psychologists.length]);
+  const [filter, setFilter] = useState("show_all");
 
-  // 2. Функція для кнопки Load More
-  const handleLoadMore = () => {
-    const lastId = psychologists[psychologists.length - 1]?.id;
-    if (lastId) {
-      dispatch(fetchPsychologists(lastId));
+  const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    dispatch(fetchPsychologists());
+  }, [dispatch]);
+
+  const handleFilterChange = (newFilter: string) => {
+    setFilter(newFilter);
+    setVisibleCount(ITEMS_PER_PAGE);
+  };
+
+  const getFilteredPsychologists = () => {
+    const filtered = [...psychologists];
+
+    switch (filter) {
+      case "az":
+        return filtered.sort((a, b) => a.name.localeCompare(b.name));
+      case "za":
+        return filtered.sort((a, b) => b.name.localeCompare(a.name));
+      case "less_10":
+        return filtered.filter((p) => p.price_per_hour < 10);
+      case "greater_10":
+        return filtered.filter((p) => p.price_per_hour > 10);
+      case "popular":
+        return filtered.sort((a, b) => b.rating - a.rating);
+      case "not_popular":
+        return filtered.sort((a, b) => a.rating - b.rating);
+      case "show_all":
+      default:
+        return filtered;
     }
+  };
+
+  const allFilteredItems = getFilteredPsychologists();
+
+  const visibleItems = allFilteredItems.slice(0, visibleCount);
+
+  const hasMoreToLoad = visibleCount < allFilteredItems.length;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
   };
 
   return (
     <div className={`container ${styles.listContainer}`}>
+      <PsychologistsFilter onFilterChange={handleFilterChange} />
+
       <ul className={styles.list}>
-        {psychologists.map((item) => (
+        {visibleItems.map((item) => (
           <PsychologistCard key={item.id} psychologist={item} />
         ))}
       </ul>
 
-      {/* Кнопка Load More */}
-      {hasMore && (
-        <button
-          onClick={handleLoadMore}
-          className={styles.loadMoreBtn}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Load More"}
+      {visibleItems.length === 0 && !isLoading && (
+        <p className={styles.noDataText}>No psychologists found.</p>
+      )}
+
+      {hasMoreToLoad && (
+        <button onClick={handleLoadMore} className={styles.loadMoreBtn}>
+          Load More
         </button>
       )}
     </div>

@@ -1,32 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  ref,
-  get,
-  query,
-  orderByKey,
-  limitToFirst,
-  startAt,
-} from "firebase/database";
+import { get, query, ref, orderByKey } from "firebase/database";
 import { db } from "../../firebase";
 
 export const fetchPsychologists = createAsyncThunk(
-  "psychologists/fetchMore",
-  async (lastId: string | null, thunkAPI) => {
+  "psychologists/fetchAll",
+  async (_, thunkAPI) => {
     try {
       const dbRef = ref(db);
 
-      const limitCount = lastId ? 5 : 3;
-
-      let q = query(dbRef, orderByKey(), limitToFirst(limitCount));
-
-      if (lastId) {
-        q = query(
-          dbRef,
-          orderByKey(),
-          startAt(lastId),
-          limitToFirst(limitCount),
-        );
-      }
+      const q = query(dbRef, orderByKey());
 
       const snapshot = await get(q);
 
@@ -37,17 +19,12 @@ export const fetchPsychologists = createAsyncThunk(
           ...rawData[key],
         }));
 
-        const finalItems = lastId
-          ? items.filter((item) => item.id !== lastId)
-          : items;
-
-        const hasMore = items.length === limitCount;
-
-        return { items: finalItems, hasMore };
+        return { items, hasMore: false };
       }
 
       return { items: [], hasMore: false };
     } catch (error) {
+      console.error(error);
       return thunkAPI.rejectWithValue("Error fetching psychologists");
     }
   },
