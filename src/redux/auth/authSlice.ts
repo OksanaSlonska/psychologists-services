@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, login, refreshUser } from "./operations";
+import { register, login, refreshUser, logoutUser } from "./operations";
 
-// 1. Описываем, как выглядит наше состояние
 interface AuthState {
   user: {
     name: string | null;
@@ -14,7 +13,6 @@ interface AuthState {
   error: string | null;
 }
 
-// 2. Начальное состояние (когда мы только зашли на сайт)
 const initialState: AuthState = {
   user: {
     name: null,
@@ -27,17 +25,10 @@ const initialState: AuthState = {
   error: null,
 };
 
-// 3. Создаем "слайс" (кусочек логики)
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    logOut: (state) => {
-      state.user = { name: null, email: null, uid: null };
-      state.token = null;
-      state.isLoggedIn = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // --- REGISTRATION ---
@@ -48,8 +39,8 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isLoggedIn = true;
-        state.user = action.payload; // Записываем данные юзера
-        state.token = action.payload.uid; // Используем UID как токен
+        state.user = action.payload;
+        state.token = action.payload.uid;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -73,19 +64,22 @@ const authSlice = createSlice({
       })
 
       .addCase(refreshUser.pending, (state) => {
-        state.isLoading = true; // Мы в процессе проверки
+        state.isLoading = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
-        state.user = action.payload; // Записываем юзера, если нашли сессию
-        state.isLoggedIn = true; // Теперь мы залогинены!
+        state.user = action.payload;
+        state.isLoggedIn = true;
         state.isLoading = false;
       })
       .addCase(refreshUser.rejected, (state) => {
-        state.isLoading = false; // Сессии нет, пользователь - гость
+        state.isLoading = false;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = { name: null, email: null, uid: null };
+        state.token = null;
+        state.isLoggedIn = false;
       });
   },
 });
 
-// 4. Экспортируем редьюсер, чтобы подключить его к стору
 export const authReducer = authSlice.reducer;
-export const { logOut } = authSlice.actions;

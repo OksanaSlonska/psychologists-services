@@ -6,7 +6,8 @@ import RegisterForm from "../AuthForms/RegisterForm";
 import LoginForm from "../AuthForms/LoginForm";
 import { useSelector, useDispatch } from "react-redux";
 import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors";
-import { logOut } from "../../redux/auth/authSlice";
+import { logoutUser } from "../../redux/auth/operations";
+import type { AppDispatch } from "../../redux/store";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,10 +45,14 @@ export default function Header() {
 
   const closeLogin = () => setIsLoginOpen(false);
 
-  // Отримуємо дані з Redux
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const user = useSelector(selectUser);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    setIsOpen(false);
+  };
 
   return (
     <header className={styles.header}>
@@ -82,31 +87,29 @@ export default function Header() {
 
           <div className={styles.authWrapper}>
             {isLoggedIn ? (
-              //  авторизований користувач
+              /* ЯКЩО ЗАЛОГІНЕН: Показуємо ім'я, аватарку та кнопку "Log out"*/
               <div className={styles.userMenu}>
-                <div className={styles.userIcon}>
-                  <svg width="24" height="24" className={styles.iconsUser}>
-                    <use href="/image/icons.svg#icon-user" />
-                  </svg>
+                <div className={styles.userInfo}>
+                  <span className={styles.avatar}>
+                    {user.name ? user.name[0].toUpperCase() : "U"}
+                  </span>
+                  <span className={styles.userName}>{user.name}</span>
                 </div>
-                <span className={styles.userName}>{user.name}</span>
-                <button
-                  className={styles.logoutBtn}
-                  onClick={() => dispatch(logOut())}
-                >
-                  Log Out
+
+                <button className={styles.logoutBtn} onClick={handleLogout}>
+                  Log out
                 </button>
               </div>
             ) : (
-              // гість
-              <>
-                <button onClick={openLogin} className={styles.loginBtn}>
+              /* ЯКЩО НЕ ЗАЛОЖЕНИЙ: Показуємо кнопки "Log In" та "Registration"*/
+              <div className={styles.authButtons}>
+                <button className={styles.loginBtn} onClick={openLogin}>
                   Log In
                 </button>
-                <button onClick={openRegister} className={styles.registerBtn}>
+                <button className={styles.registerBtn} onClick={openRegister}>
                   Registration
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>
