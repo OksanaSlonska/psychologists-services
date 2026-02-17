@@ -16,11 +16,12 @@
 .modal {
   position: relative;
   background-color: #fff;
-  padding: 64px;
   border-radius: 30px;
-  max-width: 565px;
-  width: 100%;
+  padding: 48px 24px;
+  width: 90%;
+  max-width: 335px;
   max-height: 90vh;
+  overflow-y: auto;
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
@@ -44,4 +45,12 @@
   height: 32px;
   stroke: #191a15;
   stroke-width: 2.5px;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    padding: 64px;
+    width: 600px;
+    max-width: 100%;
+  }
 }

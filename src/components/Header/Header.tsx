@@ -14,6 +14,11 @@ export default function Header() {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
 
+  const closePopups = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -162,7 +167,7 @@ export default function Header() {
             information.
           </p>
 
-          <RegisterForm />
+          <RegisterForm onClose={closePopups} />
         </div>
       </Modal>
 
@@ -174,7 +179,7 @@ export default function Header() {
             and continue your search for a psychologist.
           </p>
 
-          <LoginForm />
+          <LoginForm onClose={closePopups} />
         </div>
       </Modal>
     </header>

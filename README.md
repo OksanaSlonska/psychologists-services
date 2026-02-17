@@ -1,73 +1,63 @@
-# React + TypeScript + Vite
+# 🧠 Psychologists Services
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for finding and booking appointments with professional psychologists. The platform allows users to browse psychologist profiles, filter them by various criteria, read reviews, and manage a personal list of favorites.
 
-Currently, two official plugins are available:
+![Project Preview](./public/preview.png)
+_(Note: Upload a screenshot of your main page to the public folder and name it preview.png, or delete this line)_
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **Home Page**: Welcoming hero section with project description.
+- **Psychologists Catalog**:
+  - Fetching data from **Firebase Realtime Database**.
+  - **Pagination** (Load More button) for smooth user experience.
+  - **Filtering** by price, alphabet, and popularity.
+- **Psychologist Card**:
+  - Detailed information (experience, license, specialization).
+  - **"Read More"** functionality to expand/collapse reviews.
+  - Interactive **Favorites** button (add/remove from saved list).
+- **Authentication**:
+  - Secure Registration and Login using **Firebase Auth**.
+  - Modal windows for seamless UX.
+  - Form validation with error handling.
+- **Appointment Booking**:
+  - Modal form to book a visit.
+  - Validation for name, phone, email, and time.
+- **Favorites Page**: View only saved psychologists (private route).
+- **Responsive Design**: Fully adapted for Mobile, Tablet, and Desktop devices (Mobile First approach).
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+**Core:**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://reactjs.org/) (v18)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**State Management:**
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- [Redux Toolkit](https://redux-toolkit.js.org/)
+- [Redux Persist](https://github.com/rt2zz/redux-persist) (for saving favorites/auth state)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Routing & API:**
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- [React Router DOM](https://reactrouter.com/)
+- [Firebase](https://firebase.google.com/) (Auth, Database)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Styling & UI:**
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- CSS Modules
+- [React Spinners](https://www.npmjs.com/package/react-spinners) (Loading states)
+- [React Hot Toast](https://react-hot-toast.com/) (Notifications)
+
+**Forms & Validation:**
+
+- [React Hook Form](https://react-hook-form.com/)
+- [Yup](https://github.com/jquense/yup) (Schema validation)
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone [https://github.com/your-username/psychologists-services.git](hhttps://github.com/OksanaSlonska/psychologists-services)
+   ```

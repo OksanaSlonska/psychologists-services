@@ -1,15 +1,23 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { register as registerOperation } from "../../redux/auth/operations";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import styles from "./AuthForms.module.css";
 
 interface IFormInput {
   username: string;
   email: string;
   password: string;
+}
+
+interface Props {
+  onClose: () => void;
 }
 
 const schema = yup
@@ -28,7 +36,7 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-export default function RegisterForm() {
+export default function RegisterForm({ onClose }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -39,23 +47,28 @@ export default function RegisterForm() {
     resolver: yupResolver(schema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    //  5. Самое важное: Отправляем данные в Redux -> Firebase
     dispatch(
       registerOperation({
-        name: data.username, // В форме у нас username, а в Firebase ждем name
+        name: data.username,
         email: data.email,
         password: data.password,
       }),
     )
-      .unwrap() // Это позволяет узнать, успешно ли прошел запрос
+      .unwrap()
       .then(() => {
-        console.log("Регистрация успешна!");
-        reset(); // Очищаем форму, если все ок
+        toast.success("Successfully registered!");
+        reset();
+        onClose();
       })
       .catch((err) => {
-        console.error("Ошибка регистрации:", err);
-        // Можно показать уведомление пользователю
+        const errorMessage =
+          typeof err === "string"
+            ? err
+            : "Registration failed. Please try again.";
+        toast.error(errorMessage);
       });
   };
 
@@ -84,18 +97,29 @@ export default function RegisterForm() {
       <div className={styles.inputWrapper}>
         <div className={styles.inputPassword}>
           <input
-            type="password"
+            // 2. Меняем тип в зависимости от стейта
+            type={showPassword ? "text" : "password"}
             {...register("password")}
             placeholder="Password"
             className={styles.input}
           />
-          <svg width="30" height="30" className={styles.iconEyeOff}>
-            <use href="/image/icons.svg#icon-eye-off" />
-          </svg>
-          {errors.password && (
-            <p className={styles.error}>{errors.password.message}</p>
-          )}
+
+          <button
+            type="button"
+            className={styles.togglePasswordBtn}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <svg className={styles.iconEyeOff}>
+              <use
+                href={`/image/icons.svg#${showPassword ? "icon-eye" : "icon-eye-off"}`}
+              />
+            </svg>
+          </button>
         </div>
+
+        {errors.password && (
+          <p className={styles.error}>{errors.password.message}</p>
+        )}
       </div>
 
       <button type="submit" className={styles.submitBtn}>

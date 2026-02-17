@@ -1,15 +1,22 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { login } from "../../redux/auth/operations";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 import styles from "./AuthForms.module.css";
 
 interface IFormInput {
   email: string;
   password: string;
+}
+
+interface Props {
+  onClose: () => void;
 }
 
 const schema = yup
@@ -24,7 +31,7 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-export default function LoginForm() {
+export default function LoginForm({ onClose }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -35,16 +42,19 @@ export default function LoginForm() {
     resolver: yupResolver(schema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     dispatch(login(data))
       .unwrap()
       .then(() => {
-        console.log("Вход выполнен успешно!");
         reset();
+        onClose();
       })
       .catch((err) => {
-        console.error("Ошибка входа:", err);
-        alert("Неверный email или пароль"); // Временное уведомление
+        const errorMessage =
+          typeof err === "string" ? err : "Login failed. Please try again.";
+        toast.error(errorMessage);
       });
   };
 
@@ -62,15 +72,25 @@ export default function LoginForm() {
       <div className={styles.inputWrapper}>
         <div className={styles.inputPassword}>
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             {...register("password")}
             placeholder="Password"
             className={styles.input}
           />
-          <svg width="30" height="30" className={styles.iconEyeOff}>
-            <use href="/image/icons.svg#icon-eye-off" />
-          </svg>
+
+          <button
+            type="button"
+            className={styles.togglePasswordBtn}
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            <svg className={styles.iconEyeOff}>
+              <use
+                href={`/image/icons.svg#${showPassword ? "icon-eye" : "icon-eye-off"}`}
+              />
+            </svg>
+          </button>
         </div>
+
         {errors.password && (
           <p className={styles.error}>{errors.password.message}</p>
         )}

@@ -13,12 +13,15 @@ interface Props {
 
 export const PsychologistCard = ({ psychologist }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
   const data = psychologist;
 
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavorites);
-  const isFavorite = favorites.some((fav: any) => fav.id === psychologist.id);
+  const isFavorite = favorites.some(
+    (fav: Psychologist) => fav.id === psychologist.id,
+  );
 
   const handleFavoriteClick = () => {
     dispatch(toggleFavorite(psychologist));
@@ -96,19 +99,17 @@ export const PsychologistCard = ({ psychologist }: Props) => {
 
         <div className={styles.about}>
           <p>{psychologist.about}</p>
-          {!isExpanded && (
-            <button
-              className={styles.readMoreBtn}
-              onClick={() => {
-                setIsExpanded(true);
-              }}
-            >
-              Read more
-            </button>
-          )}
+
+          <button
+            type="button"
+            className={styles.readMoreBtn}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? "Show Less" : "Read More"}
+          </button>
         </div>
 
-        {isExpanded && (
+        {isOpen && (
           <div className={styles.expandedContent}>
             <ul className={styles.reviewsList}>
               {data.reviews.map((review, index) => (

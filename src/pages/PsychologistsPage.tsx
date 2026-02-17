@@ -9,6 +9,7 @@ import { fetchPsychologists } from "../redux/psychologists/operations";
 import { PsychologistsFilter } from "../components/PsychologistsFilter/PsychologistsFilter";
 import { PsychologistCard } from "../components/PsychologistCard/PsychologistCard";
 import styles from "./PsychologistsPage.module.css";
+import Loader from "../components/Loader/Loader";
 
 const ITEMS_PER_PAGE = 3;
 
@@ -61,6 +62,9 @@ export default function PsychologistsPage() {
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + ITEMS_PER_PAGE);
   };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className={`container ${styles.listContainer}`}>

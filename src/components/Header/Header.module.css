@@ -24,39 +24,44 @@
   padding: 15px 0;
   z-index: 102;
   transition: transform 0.15s ease;
+  flex-shrink: 0;
+  margin-right: 20px;
 }
 
 .headerlogo:hover {
   transform: scale(1.05);
 }
 
+/* --- User Menu --- */
 .userMenu {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
+  margin-top: auto;
 }
 
 .userIcon {
   width: 40px;
   height: 40px;
   background-color: #fc832c;
-
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   text-transform: uppercase;
-}
-
-.iconsUser {
-  fill: #fbfbfb;
+  color: #fbfbfb;
 }
 
 .userName {
   font-weight: 500;
   font-size: 16px;
   color: #191a15;
+}
+
+.iconsUser {
+  fill: #fbfbfb;
 }
 
 .logoutBtn {
@@ -94,25 +99,23 @@
 
   transform: translateX(100%);
   opacity: 0;
+  visibility: hidden;
 
   z-index: 101;
   padding: 20px;
+  transition:
+    transform 0.35s ease,
+    opacity 0.25s ease,
+    visibility 0.25s;
 }
 
 .menuCollapsible.open {
   transform: translateX(0);
   opacity: 1;
+  visibility: visible;
 }
 
-@media (max-width: 1023px) {
-  .menuCollapsible {
-    transition:
-      transform 0.35s ease,
-      opacity 0.25s ease;
-  }
-}
-
-/* Навігація всередині шторки */
+/* Навігація */
 .nav {
   display: flex;
   flex-direction: column;
@@ -137,12 +140,10 @@
   position: absolute;
   left: 50%;
   bottom: 0;
-
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #fc832c;
-
   transform: translateX(-50%) scale(0.6);
   opacity: 0;
   transition:
@@ -156,7 +157,7 @@
   transform: translateX(-50%) scale(1);
 }
 
-/* Кнопки всередині шторки*/
+/* Кнопки авторизації */
 .authWrapper {
   display: flex;
   flex-direction: column;
@@ -170,7 +171,9 @@
   padding: 12px 20px;
   border-radius: 30px;
   font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  text-align: center;
 }
 
 .loginBtn {
@@ -190,20 +193,14 @@
   .loginBtn:hover {
     border-color: #f37113;
   }
-
   .registerBtn:hover {
     background-color: #f37113;
   }
-
   .headerlink:hover {
     color: #f37113;
   }
-
-  .headerlink:hover::after {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
 }
+
 /* --- BURGER BUTTON --- */
 .burger {
   width: 40px;
@@ -220,12 +217,8 @@
 .burger svg {
   stroke: #191a15;
   fill: none;
-}
-
-.burger svg {
   transition: transform 0.2s ease;
 }
-
 .burger:active svg {
   transform: scale(0.9);
 }
@@ -240,7 +233,6 @@
   transition: 0.3s;
   z-index: 100;
 }
-
 .overlay.active {
   opacity: 1;
   visibility: visible;
@@ -248,26 +240,38 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   .menuCollapsible {
-    width: 400px;
+    width: 350px;
     max-width: 90%;
     gap: 60px;
+    flex-direction: column;
   }
 
   .headerlink {
     font-size: 22px;
   }
 
+  .userMenu,
+  .authWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
   .loginBtn,
   .registerBtn {
     font-size: 18px;
     padding: 16px 24px;
+    width: 100%;
+    max-width: 200px;
   }
 }
 
 @media (min-width: 1024px) {
   .burger,
   .overlay {
-    display: none;
+    display: none !important;
   }
 
   .menuCollapsible {
@@ -275,31 +279,34 @@
     transform: none;
     transition: none;
     opacity: 1;
+    visibility: visible;
+
     height: auto;
-    width: auto;
+    width: 100%;
+    flex-grow: 1;
+
     background: transparent;
     box-shadow: none;
     padding: 0;
     max-width: none;
 
-    flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 20px;
   }
 
   .nav {
     display: flex;
     flex-direction: row;
-    gap: 20px;
-    justify-content: center;
+    gap: 40px;
     align-items: center;
-    margin: 0 auto;
+    margin-bottom: 0;
+
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .headerlogo {
-    display: inline-block;
     padding-top: 34px;
     padding-bottom: 34px;
   }
@@ -314,19 +321,27 @@
   }
 
   .headerlink::after {
-    content: "";
-    position: absolute;
-    left: 50%;
     bottom: 20px;
   }
 
+  .userMenu,
   .authWrapper {
     display: flex;
-    gap: 8px;
-    align-items: center;
-
     flex-direction: row;
+    align-items: center;
+    gap: 8px;
     width: auto;
+    margin-top: 0;
+
+    flex-shrink: 0;
+  }
+
+  .loginBtn,
+  .registerBtn {
+    width: auto;
+    padding: 14px 39px;
+    font-size: 16px;
+    margin: 0;
   }
 }
 

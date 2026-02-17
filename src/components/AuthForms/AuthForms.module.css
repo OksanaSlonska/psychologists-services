@@ -9,7 +9,7 @@
 }
 
 .error {
-  color: #ef5050; /* Красный цвет */
+  color: #ef5050;
   font-size: 12px;
   margin-top: 4px;
   margin-left: 4px;
@@ -65,4 +65,52 @@
 
 .submitBtn:hover {
   background-color: #f37113;
+}
+
+.togglePasswordBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 18px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconEyeOff {
+  width: 20px;
+  height: 20px;
+  fill: transparent;
+  stroke: #191a15;
+  stroke-width: 2px;
+}
+
+@media (max-width: 767px) {
+  .form {
+    gap: 14px;
+  }
+
+  .input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .submitBtn {
+    margin-top: 24px;
+    padding: 12px;
+    font-size: 16px;
+  }
+
+  .togglePasswordBtn {
+    right: 14px;
+  }
+
+  .iconEyeOff {
+    width: 18px;
+    height: 18px;
+  }
 }
