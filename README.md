@@ -3,7 +3,6 @@
 A modern web application for finding and booking appointments with professional psychologists. The platform allows users to browse psychologist profiles, filter them by various criteria, read reviews, and manage a personal list of favorites.
 
 ![Project Preview](./public/preview.png)
-_(Note: Upload a screenshot of your main page to the public folder and name it preview.png, or delete this line)_
 
 ## ✨ Features
 
@@ -59,5 +58,5 @@ _(Note: Upload a screenshot of your main page to the public folder and name it p
 
 1. **Clone the repository**
    ```bash
-   git clone [https://github.com/your-username/psychologists-services.git](hhttps://github.com/OksanaSlonska/psychologists-services)
+   git clone [hhttps://github.com/OksanaSlonska/psychologists-services]
    ```
