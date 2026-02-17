@@ -58,5 +58,5 @@ A modern web application for finding and booking appointments with professional 
 
 1. **Clone the repository**
    ```bash
-   git clone  [https://github.com/OksanaSlonska/psychologists-services.git](https://github.com/OksanaSlonska/psychologists-services.git)
+   git clone [https://github.com/OksanaSlonska/psychologists-services.git](https://github.com/OksanaSlonska/psychologists-services.git)
    ```
