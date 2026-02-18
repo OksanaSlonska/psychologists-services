@@ -44,7 +44,8 @@ export const register = createAsyncThunk(
       return {
         uid: res.user.uid,
         email: res.user.email,
-        name: credentials.name, // Берем из формы
+        name: credentials.name,
+        ы,
       };
     } catch (error) {
       return thunkAPI.rejectWithValue((error as Error).message);

@@ -26,7 +26,6 @@ export const PsychologistsFilter = ({ onFilterChange }: Props) => {
     setIsOpen(false);
   };
 
-  // Закрытие по клику вне элемента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -46,7 +45,7 @@ export const PsychologistsFilter = ({ onFilterChange }: Props) => {
 
       <div className={styles.selectField} onClick={() => setIsOpen(!isOpen)}>
         {selectedLabel}
-        {/* Простая SVG стрелочка */}
+
         <svg className={`${styles.arrow} ${isOpen ? styles.arrowOpen : ""}`}>
           <use href="/image/icons.svg#icon-chevron-down" />
         </svg>

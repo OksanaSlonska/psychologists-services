@@ -45,7 +45,7 @@ export const fetchPsychologists = createAsyncThunk(
       }
 
       return { items: [], hasMore: false };
-    } catch (error) {
+    } catch {
       return thunkAPI.rejectWithValue("Error fetching psychologists");
     }
   },

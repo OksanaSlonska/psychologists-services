@@ -97,7 +97,6 @@ export default function RegisterForm({ onClose }: Props) {
       <div className={styles.inputWrapper}>
         <div className={styles.inputPassword}>
           <input
-            // 2. Меняем тип в зависимости от стейта
             type={showPassword ? "text" : "password"}
             {...register("password")}
             placeholder="Password"

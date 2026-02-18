@@ -54,7 +54,8 @@ const psychologistsSlice = createSlice({
       })
       .addCase(fetchPsychologists.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items; // ПЕРЕЗАПИСЫВАЕМ, а не push
+        state.items = action.payload.items;
+        state.favorites = [];
 
         // Логіка фільтрації дублів
         const existingIds = state.items.map((item) => item.id);

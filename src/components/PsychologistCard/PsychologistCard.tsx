@@ -6,6 +6,9 @@ import { selectFavorites } from "../../redux/psychologists/selectors";
 import styles from "./PsychologistCard.module.css";
 import Modal from "../Modal/Modal";
 import { AppointmentForm } from "../AppointmentForm/AppointmentForm";
+import toast from "react-hot-toast";
+
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 
 interface Props {
   psychologist: Psychologist;
@@ -19,11 +22,18 @@ export const PsychologistCard = ({ psychologist }: Props) => {
 
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavorites);
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+
   const isFavorite = favorites.some(
     (fav: Psychologist) => fav.id === psychologist.id,
   );
 
   const handleFavoriteClick = () => {
+    if (!isLoggedIn) {
+      toast.error("This feature is available only to authorized users");
+      return;
+    }
+
     dispatch(toggleFavorite(psychologist));
   };
 
