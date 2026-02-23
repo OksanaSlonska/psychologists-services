@@ -34,6 +34,10 @@ const psychologistsSlice = createSlice({
       state.items = [];
       state.hasMore = true;
     },
+    clearFavorites: (state) => {
+      state.favorites = [];
+      localStorage.removeItem("favorites");
+    },
     toggleFavorite: (state, action: PayloadAction<Psychologist>) => {
       const index = state.favorites.findIndex(
         (fav) => fav.id === action.payload.id,
@@ -54,8 +58,6 @@ const psychologistsSlice = createSlice({
       })
       .addCase(fetchPsychologists.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload.items;
-        state.favorites = [];
 
         // Логіка фільтрації дублів
         const existingIds = state.items.map((item) => item.id);
@@ -73,5 +75,7 @@ const psychologistsSlice = createSlice({
   },
 });
 
-export const { toggleFavorite, clearItems } = psychologistsSlice.actions;
+export const { toggleFavorite, clearItems, clearFavorites } =
+  psychologistsSlice.actions;
+
 export const psychologistsReducer = psychologistsSlice.reducer;

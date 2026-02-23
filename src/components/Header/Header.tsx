@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectIsLoggedIn, selectUser } from "../../redux/auth/selectors";
 import { logoutUser } from "../../redux/auth/operations";
 import type { AppDispatch } from "../../redux/store";
+import { clearFavorites } from "../../redux/psychologists/psychologistsSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,6 +52,7 @@ export default function Header() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    dispatch(clearFavorites());
     setIsOpen(false);
   };
 
